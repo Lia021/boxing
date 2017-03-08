@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <script src="https://aframe.io/releases/0.3.0/aframe.min.js"></script>
+  <script src="https://sdk.altvr.com/libs/altspace.js/0.28.1/altspace.min.js"></script>
+  <script src="https://cdn.rawgit.com/AltspaceVR/aframe-altspace-component/v1.4.0/dist/aframe-altspace-component.min.js"></script>
+  <script>
+    altspace.getThreeJSTrackingSkeleton().then(function (skeleton) {
+          window.head = skeleton.getJoint('Head');
+        });
+        AFRAME.registerComponent('altspace-look-at', {
+          init: function () {
+            if (!window.altspace || !altspace.inClient) { return; }
+          },
+          tick: function () {
+            if (!window.head || !this.el.object3D) { return; }
+            this.el.object3D.lookAt(window.head.position); 
+          }
+        })
+  </script>
+  <script>
+    // n-skeleton-parent only works with root meshes at the moment. Since most model loaders use a root
+    // container object, we need to collapse the model so that n-skeleton-parent can access the mesh directly.
+    AFRAME.registerComponent('collapse-model', {
+        init: function () {
+            this.el.addEventListener('model-loaded', function () {
+                this.el.object3DMap.mesh.updateMatrixWorld();
+                var mesh;
+                this.el.object3DMap.mesh.traverse(function (obj) {
+                    if (!mesh && obj instanceof THREE.Mesh) {
+                        mesh = obj;
+                    }
+                }.bind(this))
+                if (mesh) {
+                    mesh.scale.copy(mesh.getWorldScale());
+                    this.el.setObject3D('mesh', mesh);
+                    // setObject3D emits this event in a-frame 0.4.0
+                    this.el.emit('object3dset', {
+                        type: 'mesh'
+                    });
+                }
+            }.bind(this));
+        }
+    });
+  </script>
+  <body>
+    <a-scene altspace=fullspace:true sync-system="author: bookgirl; app: highrise">
+
+      <a-assets>
+
+          <a-asset-item id="table" src="https://rawgit.com/Lia021/model/master/table%20highrise/untitled.dae"></a-asset-item>
+        <a-asset-item id="board" src="https://rawgit.com/Lia021/model/master/bell/bell.dae"></a-asset-item>
+       <a-asset-item id="l" src="https://rawgit.com/Lia021/model/master/glove/red.dae"></a-asset-item>
+         <a-asset-item id="r" src="https://rawgit.com/Lia021/model/master/glove/red.dae"></a-asset-item>
+         <a-asset-item id="lb" src="https://rawgit.com/Lia021/model/master/glove/blue.dae"></a-asset-item>
+         <a-asset-item id="rb" src="https://rawgit.com/Lia021/model/master/glove/blue.dae"></a-asset-item>
+        <a-asset-item id="rink" src="https://rawgit.com/Lia021/model/master/rink/boxing.dae"></a-asset-item>
+                 <a-mixin id="l" collada-model="#l" collapse-model></a-mixin>
+
+        <a-mixin id="parent-to-left-hand" position="0 0 -0.1" rotation="-90 0 0" n-skeleton-parent="part: hand; side: left;" sync sync-n-skeleton-parent></a-mixin>
+        
+          <a-mixin id="r" collada-model="#r" collapse-model></a-mixin>
+
+        <a-mixin id="parent-to-right-hand" position="0 0 -0.1" rotation="-90 0 0" n-skeleton-parent="part: hand; side: right;" sync sync-n-skeleton-parent></a-mixin>
+        
+         <a-mixin id="lb" collada-model="#lb" collapse-model></a-mixin>
+
+        <a-mixin id="parent-to-left-hand" position="0 0 -0.1" rotation="-90 0 0" n-skeleton-parent="part: hand; side: left;" sync sync-n-skeleton-parent></a-mixin>
+        
+          <a-mixin id="rb" collada-model="#rb" collapse-model></a-mixin>
+
+        <a-mixin id="parent-to-right-hand" position="0 0 -0.1" rotation="-90 0 0" n-skeleton-parent="part: hand; side: right;" sync sync-n-skeleton-parent></a-mixin>
+        
+     </a-assets>    
+ <!--table-->
+
+      <a-entity position="-28 0 2" scale="3 3 3.3 " rotation="0 0 0" n-mesh-collider="type: environment; convex: false" collada-model="#table"></a-entity>
+ 
+      <!--board-->
+
+       <a-entity position="-28.8 1 2">
+      <a-entity id="pc-s" n-sound="on: s; src:https://cdn.rawgit.com/Lia021/sound/master/Boxing_-_Boxing.ogg;"></a-entity>
+      <a-entity id="gear-s" n-sound="on: s; src:https://cdn.rawgit.com/Lia021/sound/master/Boxing%20-%20Boxing.mp3;"></a-entity>
+      <a-entity wire="on: click; emit: s; targets: #pc-s, #gear-s;" scale="1 1 1" rotation="0 0 0" collada-model="#board"></a-entity>
+    </a-entity> 
+      
+
+      
+        <!--model 1-->
+
+      <a-entity position="-20 1 5" mixin="l"rotation="90 0 0" instantiator="on: click;group: l; mixin: l parent-to-left-hand"></a-entity>
+              <!--model 2-->
+
+      <a-entity position="-21 1 5" mixin="r"rotation="90 0 0" instantiator="on: click;group: r; mixin: r parent-to-right-hand"></a-entity>
+      
+        <!--model 3-->
+
+      <a-entity position="-17 1 5" mixin="lb"rotation="90 0 0" instantiator="on: click;group: lb; mixin: lb parent-to-left-hand"></a-entity>
+              <!--model 4-->
+
+      <a-entity position="-18 1 5" mixin="rb"rotation="90 0 0" instantiator="on: click;group: rb; mixin: rb parent-to-right-hand"></a-entity>
+      
+       <!--rink-->
+
+      <a-entity position="-19 0.05 2"scale="2.4 2.4 2.4 " rotation="0 0 0" n-mesh-collider="type: environment; convex: false" collada-model="#rink"></a-entity>
+ 
+      
+
+
+</body>
+</html>
