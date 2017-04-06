@@ -3,25 +3,9 @@
 
 <head>
   <meta charset="utf-8">
-  <title>boxing</title>
   <meta name="viewport" content="width=device-width">
   <script src="https://aframe.io/releases/0.3.0/aframe.min.js"></script>
-  <script src="https://sdk.altvr.com/libs/altspace.js/0.28.1/altspace.min.js"></script>
-  <script src="https://cdn.rawgit.com/AltspaceVR/aframe-altspace-component/v1.4.0/dist/aframe-altspace-component.min.js"></script>
-  <script>
-    altspace.getThreeJSTrackingSkeleton().then(function (skeleton) {
-          window.head = skeleton.getJoint('Head');
-        });
-        AFRAME.registerComponent('altspace-look-at', {
-          init: function () {
-            if (!window.altspace || !altspace.inClient) { return; }
-          },
-          tick: function () {
-            if (!window.head || !this.el.object3D) { return; }
-            this.el.object3D.lookAt(window.head.position); 
-          }
-        })
-  </script>
+  <script src="https://sdk.altvr.com/libs/altspace.js/2.2.0/altspace.min.js"></script>
   <script>
     // n-skeleton-parent only works with root meshes at the moment. Since most model loaders use a root
     // container object, we need to collapse the model so that n-skeleton-parent can access the mesh directly.
@@ -47,68 +31,172 @@
         }
     });
   </script>
+  <script>
+    altspace.getThreeJSTrackingSkeleton().then(function (skeleton) {
+          window.head = skeleton.getJoint('Head');
+        });
+        AFRAME.registerComponent('altspace-look-at', {
+          init: function () {
+            if (!window.altspace || !altspace.inClient) { return; }
+          },
+          tick: function () {
+            if (!window.head || !this.el.object3D) { return; }
+            this.el.object3D.lookAt(window.head.position); 
+          }
+        })
+  </script>
   <body>
     <a-scene altspace=fullspace:true sync-system="author: bookgirl; app: highrise">
 
-      <a-assets>
+            <a-assets>
 
-          <a-asset-item id="table" src="https://rawgit.com/Lia021/model/master/table%20highrise/untitled.dae"></a-asset-item>
-        <a-asset-item id="board" src="https://rawgit.com/Lia021/model/master/bell/bell.dae"></a-asset-item>
-       <a-asset-item id="l" src="https://rawgit.com/Lia021/model/master/glove/red.dae"></a-asset-item>
-         <a-asset-item id="r" src="https://rawgit.com/Lia021/model/master/glove/red.dae"></a-asset-item>
-         <a-asset-item id="lb" src="https://rawgit.com/Lia021/model/master/glove/blue.dae"></a-asset-item>
-         <a-asset-item id="rb" src="https://rawgit.com/Lia021/model/master/glove/blue.dae"></a-asset-item>
-        <a-asset-item id="rink" src="https://rawgit.com/Lia021/model/master/rink/boxing.dae"></a-asset-item>
-                 <a-mixin id="l" collada-model="#l" collapse-model></a-mixin>
-
-        <a-mixin id="parent-to-left-hand" position="0 0 -0.1" rotation="-90 0 0" n-skeleton-parent="part: hand; side: left;" sync sync-n-skeleton-parent></a-mixin>
-        
-          <a-mixin id="r" collada-model="#r" collapse-model></a-mixin>
-
-        <a-mixin id="parent-to-right-hand" position="0 0 -0.1" rotation="-90 0 0" n-skeleton-parent="part: hand; side: right;" sync sync-n-skeleton-parent></a-mixin>
-        
-         <a-mixin id="lb" collada-model="#lb" collapse-model></a-mixin>
+        <a-asset-item id="base" src="https://rawgit.com/Lia021/model/master/theater/lia%20theater2.dae"></a-asset-item>
+        <a-asset-item id="table" src="https://cdn.rawgit.com/Lia021/model/0d1f715d/table%20highrise/untitled.dae"></a-asset-item>
+        <a-asset-item id="board" src="https://cdn.rawgit.com/Lia021/model/0d1f715d/bell/bell.dae"></a-asset-item>
+        <a-asset-item id="l" src="https://cdn.rawgit.com/Lia021/model/0d1f715d/glove/red.dae"></a-asset-item>
+        <a-asset-item id="r" src="https://cdn.rawgit.com/Lia021/model/0d1f715d/glove/red.dae"></a-asset-item>
+        <a-asset-item id="lb" src="https://cdn.rawgit.com/Lia021/model/0d1f715d/glove/blue.dae"></a-asset-item>
+        <a-asset-item id="rb" src="https://cdn.rawgit.com/Lia021/model/0d1f715d/glove/blue.dae"></a-asset-item>
+        <a-asset-item id="rink" src="https://cdn.rawgit.com/Lia021/model/0d1f715d/rink/boxing.dae"></a-asset-item>
+        <a-asset-item id="test" src="https://rawgit.com/Lia021/boxing/master/boxing%20helmet/red.dae"></a-asset-item>
+        <a-asset-item id="BLUE" src="https://rawgit.com/Lia021/boxing/master/boxing%20helmet/blue.dae"></a-asset-item>
+        <a-asset-item id="sign" src="https://rawgit.com/Lia021/theater-space/master/Altspace%20symbol/Altspace%20symbol1.dae"></a-asset-item>
+        <a-asset-item id="bag" src="https://rawgit.com/Lia021/boxing/master/bag/bag.dae"></a-asset-item>
+        <a-mixin id="l" collada-model="#l" collapse-model></a-mixin>
 
         <a-mixin id="parent-to-left-hand" position="0 0 -0.1" rotation="-90 0 0" n-skeleton-parent="part: hand; side: left;" sync sync-n-skeleton-parent></a-mixin>
-        
-          <a-mixin id="rb" collada-model="#rb" collapse-model></a-mixin>
+
+        <a-mixin id="r" collada-model="#r" collapse-model></a-mixin>
 
         <a-mixin id="parent-to-right-hand" position="0 0 -0.1" rotation="-90 0 0" n-skeleton-parent="part: hand; side: right;" sync sync-n-skeleton-parent></a-mixin>
-        
-     </a-assets>    
- <!--table-->
 
-      <a-entity position="-28 0 2" scale="3 3 3.3 " rotation="0 0 0" n-mesh-collider="type: environment; convex: false" collada-model="#table"></a-entity>
+        <a-mixin id="lb" collada-model="#lb" collapse-model></a-mixin>
+
+        <a-mixin id="parent-to-left-hand" position="0 0 -0.1" rotation="-90 0 0" n-skeleton-parent="part: hand; side: left;" sync sync-n-skeleton-parent></a-mixin>
+
+        <a-mixin id="rb" collada-model="#rb" collapse-model></a-mixin>
+
+        <a-mixin id="parent-to-right-hand" position="0 0 -0.1" rotation="-90 0 0" n-skeleton-parent="part: hand; side: right;" sync sync-n-skeleton-parent></a-mixin>
+
+        <a-mixin id="test" collada-model="#test" collapse-model></a-mixin>
+
+        <a-mixin id="parent-to-head" position="-0.123 0.05 0" scale="1.13 1.13 1.13" rotation="0 90 0" n-skeleton-parent="part:head;" sync sync-n-skeleton-parent></a-mixin>
+
+        <a-mixin id="BLUE" collada-model="#BLUE" collapse-model></a-mixin>
+
+        <a-mixin id="parent-to-head" position="-0.122 0.05 0" scale="1.13 1.13 1.13" rotation="0 90 0" n-skeleton-parent="part:head;" sync sync-n-skeleton-parent></a-mixin>
+         
+        <a-mixin id="punch-target"scale="1 1 1" n-box-collider="isTrigger: true" n-container="capacity: 1" n-sound="on: container-full; src:https://cdn.rawgit.com/Lia021/sound/master/Punch_-_Punch_Sound_Effect.ogg" sync sync-n-skeleton-parent="part: hips" sync sync-n-skeleton-parent></a-mixin>
+        
+        
+      </a-assets>
+
+       <!--Space-->
+    <a-entity n-billboard n-text="fontSize: 3; text:Lia-Space" position="-9 2.50 -7"></a-entity>
+
+       <!--portal-->
+     
+	<a-entity position='-9 0 -7' rotation='0 0 0' n-portal='targetSpace: event-646459995168179056'></a-entity>
+        
+      <!--sky-->
+      <a-sky radius="300" src="https://rawgit.com/Lia021/goldspace/master/goldspace3.jpg"></a-sky>
  
+     <!--ground-->
+      <a-image position="-9.60 0.01 0" side="double" rotation="90 0 0" src="https://rawgit.com/Lia021/boxing/master/ground.jpg" altspace-cursor-collider="enabled: false" width="10.40" height="5"></a-image>
+  
+      <!--table-->
+
+      <a-entity position="-35 0 0" scale="3 3 3.3 " rotation="0 0 0" n-mesh-collider="type: environment; convex: false" collada-model="#table"></a-entity>
+
       <!--board-->
 
-       <a-entity position="-28.8 1 2">
-      <a-entity id="pc-s" n-sound="on: s; src:https://cdn.rawgit.com/Lia021/sound/master/Boxing_-_Boxing.ogg;"></a-entity>
-      <a-entity id="gear-s" n-sound="on: s; src:https://cdn.rawgit.com/Lia021/sound/master/Boxing%20-%20Boxing.mp3;"></a-entity>
-      <a-entity wire="on: click; emit: s; targets: #pc-s, #gear-s;" scale="1 1 1" rotation="0 0 0" collada-model="#board"></a-entity>
-    </a-entity> 
+      <a-entity position="-35.5 1 0">
+        <a-entity id="pc-s" sync="own-on: s" sync-n-sound n-sound="on: s; src:https://cdn.rawgit.com/Lia021/sound/master/Boxing_-_Boxing.ogg;"></a-entity>
+        <a-entity id="gear-s" sync="own-on: s" sync-n-sound n-sound="on: s; src:https://cdn.rawgit.com/Lia021/sound/f6f19500/Boxing%20-%20Boxing.mp3;"></a-entity>
+        <a-entity wire="on: click; emit: s; targets: #pc-s, #gear-s;" scale="1 1 1" rotation="0 0 0" collada-model="#board"></a-entity>
+      </a-entity>
+             
+      <!--model 1-->
+
+      <a-entity position="-33 1 7" mixin="l" rotation="90 0 0" instantiator="on: click;group: l; mixin: l parent-to-left-hand"></a-entity>
+      <!--model 2-->
+
+      <a-entity position="-32 1 7" mixin="r" rotation="90 0 0" instantiator="on: click;group: r; mixin: r parent-to-right-hand"></a-entity>
+
+      <!--model 3-->
+
+      <a-entity position="-29 1 7" mixin="lb" rotation="90 0 0" instantiator="on: click;group: lb; mixin: lb parent-to-left-hand"></a-entity>
+      <!--model 4-->
+
+      <a-entity position="-28 1 7" mixin="rb" rotation="90 0 0" instantiator="on: click;group: rb; mixin: rb parent-to-right-hand"></a-entity>
+
+      <!--model 5-->
+
+      <a-entity position="-31 1 6" mixin="test" instantiator="on: click;group: test; mixin: test parent-to-head"></a-entity>
+      <!--model 6-->
+
+      <a-entity position="-30 1 6" mixin="BLUE" instantiator="on: click;group: BLUE; mixin: BLUE parent-to-head"></a-entity>
+
+      <!--model7-->
+      <a-entity position="-22 1 2" rotation="0 180 0" n-mesh-collider="enabled: true; type: environment" collada-model="#sign">
+        <a-animation attribute="rotation" dur="10000.5" fill="forwards" to="0 360 0" repeat="indefinite" easing="linear">
+        </a-animation>
+      </a-entity>
+      <!--model8-->
+      <a-entity position="-22 1 -2" rotation="0 180 0" n-mesh-collider="enabled: true; type: environment" collada-model="#sign">
+        <a-animation attribute="rotation" dur="10000.5" fill="forwards" to="0 360 0" repeat="indefinite" easing="linear">
+        </a-animation>
+      </a-entity>
+
+      <!--model 9-->
+      <a-entity position="-8 1 2" n-mesh-collider="enabled: true; type: environment" collada-model="#sign">
+        <a-animation attribute="rotation" dur="10000.5" fill="forwards" to="0 360 0" repeat="indefinite" easing="linear">
+        </a-animation>
+      </a-entity>
+      <!--model 10-->
+      <a-entity position="-15 1 2" n-mesh-collider="enabled: true; type: environment" collada-model="#sign">
+        <a-animation attribute="rotation" dur="10000.5" fill="forwards" to="0 360 0" repeat="indefinite" easing="linear">
+        </a-animation>
+      </a-entity>
+      <!--model 11-->
+      <a-entity position="-8 1 -2" n-mesh-collider="enabled: true; type: environment" collada-model="#sign">
+        <a-animation attribute="rotation" dur="10000.5" fill="forwards" to="0 360 0" repeat="indefinite" easing="linear">
+        </a-animation>
+      </a-entity>
+      <!--model 12-->
+      <a-entity position="-15 1 -2" n-mesh-collider="enabled: true; type: environment" collada-model="#sign">
+        <a-animation attribute="rotation" dur="10000.5" fill="forwards" to="0 360 0" repeat="indefinite" easing="linear">
+        </a-animation>
+      </a-entity>
+
+       <!--model 13-->
+
+      <a-entity position="-30 0.11 -10" scale="5 5 5 " rotation="0 0 0" n-mesh-collider="type: environment; convex: false" collada-model="#bag"></a-entity>
       
+       <!--model 14-->
 
+      <a-entity position="-33 0.11 -10" scale="5 5 5 " rotation="0 0 0" n-mesh-collider="type: environment; convex: false" collada-model="#bag"></a-entity>
       
-        <!--model 1-->
+       <!--model 15-->
 
-      <a-entity position="-20 1 5" mixin="l"rotation="90 0 0" instantiator="on: click;group: l; mixin: l parent-to-left-hand"></a-entity>
-              <!--model 2-->
-
-      <a-entity position="-21 1 5" mixin="r"rotation="90 0 0" instantiator="on: click;group: r; mixin: r parent-to-right-hand"></a-entity>
+      <a-entity position="-27 0.11 -10" scale="5 5 5 " rotation="0 0 0" n-mesh-collider="type: environment; convex: false" collada-model="#bag"></a-entity>
       
-        <!--model 3-->
+      <!--rink-->
 
-      <a-entity position="-17 1 5" mixin="lb"rotation="90 0 0" instantiator="on: click;group: lb; mixin: lb parent-to-left-hand"></a-entity>
-              <!--model 4-->
+      <a-entity position="-30 0.04 0" scale="3.5 3.5 3.5 " rotation="0 0 0" n-mesh-collider="type: environment; convex: false" collada-model="#rink"></a-entity>
 
-      <a-entity position="-18 1 5" mixin="rb"rotation="90 0 0" instantiator="on: click;group: rb; mixin: rb parent-to-right-hand"></a-entity>
-      
-       <!--rink-->
+      <!--boxing-->
+      <a-sphere src="https://rawgit.com/Lia021/boxing/master/green.jpg" side="back" radius="17.90" position="-30 8.10 0">
+      </a-sphere>
+      <!-- Basic circle. -->
+      <a-circle src="https://rawgit.com/Lia021/boxing/master/blue%20star.jpg" radius="15.92" position="-30 0.03 0" side="double" rotation="90 0 0" altspace-cursor-collider="enabled: false"></a-circle>
+      <!--space-->
+      <a-sphere src="https://rawgit.com/Lia021/theater-space/master/space.jpg"altspace-cursor-collider="enabled: false"radius="5.70" side="back"position="1 2 0">
+        <a-animation attribute="rotation" dur="150000" fill="forwards" to="0 360 0" repeat="indefinite" easing="linear">
+        </a-animation>
+      </a-sphere>
 
-      <a-entity position="-19 0.05 2"scale="2.4 2.4 2.4 " rotation="0 0 0" n-mesh-collider="type: environment; convex: false" collada-model="#rink"></a-entity>
- 
-      
+
 
 
 </body>
